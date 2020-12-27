@@ -97,7 +97,7 @@ export default function Features(props) {
               <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description']}</Typography>
             </Container>
           </Box>
-            <div padding={3}>
+            <Box component={"div"} display = {"block"} >
                 <Select
                     labelId = {"Change your styling"}
                     id={"styling-id"}
@@ -107,7 +107,7 @@ export default function Features(props) {
                     <MenuItem value = {"paper"}>Original Theme</MenuItem>
                     <MenuItem value = {"paperRed"}>Red Theme</MenuItem>
                 </Select>
-            </div>
+            </Box>
           <Grid container spacing={2} >
             <DragDropContext onDragEnd ={onDragEnd}>
             {
