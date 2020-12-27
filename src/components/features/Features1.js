@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -6,8 +6,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from "@material-ui/core/Paper";
+import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd';
 
-import ApartmentIcon from '@material-ui/icons/Apartment';
 import {MonochromePhotos} from "@material-ui/icons";
 import {ListItem} from "../../constant/listItem";
 
@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Features(props) {
   const classes = useStyles();
-  const item = ListItem;
+  const item = ListItem.items;
+  const[itemList,updateItemList] = useState(ListItem);
   const content = {
     'badge': 'LOREM IPSUM',
     'header-p1': 'Donec lacinia',
@@ -49,7 +50,33 @@ export default function Features(props) {
     'col6-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
     ...props.content
   };
-  console.log("list item", item);
+  let onDragEnd = (result) =>{
+    const {destination, source, draggableId} = result;
+   if(!destination){
+     return
+   }
+
+    if (
+        (destination.droppableId === source.droppableId) && (destination.index === source.index)
+    ){
+      return
+    }
+    // const originalList = itemList
+    const newList = Array.from(itemList.items);
+    let sourceIndex = newList[source.index]
+    let destinationIndex = newList[destination.index]
+    newList.splice(source.index,1,destinationIndex)
+    newList.splice(destination.index,1, sourceIndex)
+    console.log("sourceIndex",sourceIndex)
+    console.log("destinationIndex",destinationIndex)
+    console.log("newList", newList);
+    updateItemList({
+      items :   [...newList]
+    })
+
+
+
+  }
 
 
   return (
@@ -66,42 +93,48 @@ export default function Features(props) {
               <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description']}</Typography>
             </Container>
           </Box>
-          <Grid container spacing={6} >
-
+          <Grid container spacing={2} >
+            <DragDropContext onDragEnd ={onDragEnd}>
             {
-              item.map((value,index) => {
-                console.log("index", index)
-                return value['col1-header'] ?
-                    <Grid item xs={12} sm={6} md={3}>
-                  <Paper display="flex" variant={"outlined"} draggable={true}>
-                    <Box pr={5} padding = {1}>
-                      <Avatar variant="rounded" className={classes.iconWrapper}>
-                        <MonochromePhotos />
-                      </Avatar>
-                    </Box>
-                    <Box padding={1}>
-                      <Typography variant="h6" component="h3" gutterBottom={true}>{value['col1-header']}</Typography>
-                      <Typography variant="body2" component="p" color="textSecondary">{value['col1-desc']}</Typography>
-                    </Box>
-                  </Paper>
-                </Grid> :
-                    <Grid item xs={12} sm={6} md={3} >
-                      <Paper display="flex" variant={"outlined"} className={classes.paper} draggable={true}>
-                        {/*<Box pr={5}>*/}
-                        {/*  <Avatar variant="rounded" className={classes.iconWrapper}>*/}
-                        {/*  /!*  <ApartmentIcon />*!/*/}
-                        {/*  </Avatar>*/}
-                        {/*</Box>*/}
-                        {/*<Box padding={1}>*/}
-                        {/*  <Typography variant="h6" component="h3" gutterBottom={true}>{}</Typography>*/}
-                        {/*  <Typography variant="body2" component="p" color="textSecondary">{}</Typography>*/}
-                        {/*</Box>*/}
-                      </Paper>
-                    </Grid>
+              itemList.items.map((value,index) => {
+                return (
+                  <Droppable droppableId ={value.id.toString()} key={value.id.toString()}>
+                    {
+                      (provided) =>{
+                        return (
+                            <Grid item xs={12} sm={6} md={3} innerRef={provided.innerRef} {...provided.droppableProps} >
+                              <Draggable draggableId={value.id.toString()} index={index}>
+                                {
+                                  (provided) =>{
+                                    return(
+                                        <Paper display="flex" variant={"outlined"}  className={classes.paper} innerRef={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                          <Box pr={5} padding = {1}>
+                                            <Avatar variant="rounded" className={classes.iconWrapper}>
+                                              <MonochromePhotos />
+                                            </Avatar>
+                                          </Box>
+                                          <Box padding={1}>
+                                            <Typography variant="h6" component="h3" gutterBottom={true}>{value['col1-header']}</Typography>
+                                            <Typography variant="body2" component="p" color="textSecondary">{value['col1-desc']}</Typography>
+                                          </Box>
+                                        </Paper>
+                                    )
+                                  }
+                                }
+
+                              </Draggable>
+                              {provided.placeholder}
+                            </Grid>
+                        )
+                      }
+                    }
+
+                  </Droppable>
+                )
 
               })
             }
-
+            </DragDropContext>
           </Grid>
         </Box>
       </Container>
