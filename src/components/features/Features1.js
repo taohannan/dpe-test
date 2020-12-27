@@ -46,7 +46,8 @@ export default function Features(props) {
     'badge': 'Show off your coding skill',
     'header-p1': 'Question 1: ',
     'header-p2': 'Show the sentences in boxes.',
-    'description': 'Dropee.com,B2B Marketplace,SaaS enabled marketplace,Provide Transparency,Build Trust',
+    'description': 'Dropee.com,B2B Marketplace,SaaS enabled marketplace,Provide Transparency,Build Trust' + ' \n Just Drag the box to change the location',
+      'description2': ' Just Drag and Drop the box to change the location',
      ...props.content
   };
   let onDragEnd = (result) =>{
@@ -95,6 +96,7 @@ export default function Features(props) {
                 <Typography variant="h3" component="span">{content['header-p2']}</Typography>
               </Typography>
               <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description']}</Typography>
+                <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description2']}</Typography>
             </Container>
           </Box>
             <Box component={"div"} display = {"block"} >
