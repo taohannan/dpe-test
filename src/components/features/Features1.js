@@ -11,6 +11,8 @@ import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd';
 import {MonochromePhotos} from "@material-ui/icons";
 import {ListItem} from "../../constant/listItem";
 import red from "@material-ui/core/colors/red";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -25,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
       minHeight : '200px',
     backgroundColor: 'white',
-  
+
   },
     paperRed: {
         width: '100%',
         minHeight : '200px',
         backgroundColor: 'white',
-        color : red
+        color : 'red'
     }
 }));
 
@@ -39,6 +41,7 @@ export default function Features(props) {
   const classes = useStyles();
   const item = ListItem.items;
   const[itemList,updateItemList] = useState(ListItem);
+  const[stylingSelect,updateStyling] = useState('paper')
   const content = {
     'badge': 'Show off your coding skill',
     'header-p1': 'Question 1: ',
@@ -74,6 +77,11 @@ export default function Features(props) {
 
   }
 
+  const handleChange = (event) => {
+      console.log(event.target.value)
+      updateStyling(event.target.value)
+  }
+
 
   return (
     <section className={classes.section}>
@@ -89,6 +97,17 @@ export default function Features(props) {
               <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description']}</Typography>
             </Container>
           </Box>
+            <div padding={3}>
+                <Select
+                    labelId = {"Change your styling"}
+                    id={"styling-id"}
+                    value={stylingSelect}
+                    onChange={handleChange}
+                >
+                    <MenuItem value = {"paper"}>Original Theme</MenuItem>
+                    <MenuItem value = {"paperRed"}>Red Theme</MenuItem>
+                </Select>
+            </div>
           <Grid container spacing={2} >
             <DragDropContext onDragEnd ={onDragEnd}>
             {
@@ -103,7 +122,7 @@ export default function Features(props) {
                                 {
                                   (provided) =>{
                                     return(
-                                        <Paper display="flex" variant={"outlined"}  className={classes.paper} innerRef={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                        <Paper display="flex" variant={"outlined"}  className={classes[stylingSelect]} innerRef={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                           <Box pr={5} padding = {1}>
                                             <Avatar variant="rounded" className={classes.iconWrapper}>
                                               <MonochromePhotos />
