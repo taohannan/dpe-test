@@ -10,6 +10,7 @@ import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd';
 
 import {MonochromePhotos} from "@material-ui/icons";
 import {ListItem} from "../../constant/listItem";
+import red from "@material-ui/core/colors/red";
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -22,9 +23,16 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     width: '100%',
-    height: '191px',
+      minHeight : '200px',
     backgroundColor: 'white',
+  
   },
+    paperRed: {
+        width: '100%',
+        minHeight : '200px',
+        backgroundColor: 'white',
+        color : red
+    }
 }));
 
 export default function Features(props) {
@@ -32,23 +40,11 @@ export default function Features(props) {
   const item = ListItem.items;
   const[itemList,updateItemList] = useState(ListItem);
   const content = {
-    'badge': 'LOREM IPSUM',
-    'header-p1': 'Donec lacinia',
-    'header-p2': 'turpis non sapien lobortis pretium',
-    'description': 'Integer feugiat massa sapien, vitae tristique metus suscipit nec.',    
-    'col1-header': 'Lorem ipsum dolor sit amet',
-    'col1-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    'col2-header': 'Lorem ipsum dolor sit amet',
-    'col2-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    'col3-header': 'Lorem ipsum dolor sit amet',
-    'col3-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    'col4-header': 'Lorem ipsum dolor sit amet',
-    'col4-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    'col5-header': 'Lorem ipsum dolor sit amet',
-    'col5-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    'col6-header': 'Lorem ipsum dolor sit amet',
-    'col6-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
-    ...props.content
+    'badge': 'Show off your coding skill',
+    'header-p1': 'Question 1: ',
+    'header-p2': 'Show the sentences in boxes.',
+    'description': 'Dropee.com,B2B Marketplace,SaaS enabled marketplace,Provide Transparency,Build Trust',
+     ...props.content
   };
   let onDragEnd = (result) =>{
     const {destination, source, draggableId} = result;
