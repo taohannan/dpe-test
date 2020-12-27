@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +6,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from "@material-ui/core/Paper";
-import {DragDropContext,Droppable,Draggable} from "react-beautiful-dnd";
 
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import {MonochromePhotos} from "@material-ui/icons";
@@ -28,11 +27,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function Features(props) {
   const classes = useStyles();
-  const [listItem, setListItem] = useState(ListItem);
+  const item = ListItem;
   const content = {
     'badge': 'LOREM IPSUM',
     'header-p1': 'Donec lacinia',
@@ -52,16 +49,8 @@ export default function Features(props) {
     'col6-desc': 'In eget ligula ut est interdum finibus. Etiam consectetur, libero tincidunt vulputate fermentum, nisi nulla cursus turpis.',
     ...props.content
   };
+  console.log("list item", item);
 
-
-  let handleDrag = (event,value) =>{
-    console.log("event", event);
-    console.log("value", value)
-  }
-  let onDragEnd = result =>{
-  console.log("dragend",result)
-
-  }
 
   return (
     <section className={classes.section}>
@@ -77,49 +66,43 @@ export default function Features(props) {
               <Typography variant="subtitle1" color="textSecondary" paragraph={true}>{content['description']}</Typography>
             </Container>
           </Box>
-          <DragDropContext onDragEnd = {onDragEnd}>
           <Grid container spacing={6} >
-            <Droppable droppableId ={listItem.columns.id}>
-              {
-                (provided) => {
-                  return (
-                      listItem.items.map((value,index) => {
-                         return (
 
-                            <Grid item xs={12} sm={6} md={3} innerRef={provided.innerRef} key={value.id}>
-                              <Draggable draggableId={index.toString()} index={index} >
-                                {(provided) => {
-                                return (
-                                 <Paper display="flex" variant={"outlined"}  id={index}  className={classes.paper} {...provided.draggableProps}  {...provided.dragHandleProps} innerRef={provided.innerRef} >
-                                <Box pr={5} padding = {1}>
-                                <Avatar variant="rounded" className={classes.iconWrapper}>
-                                <MonochromePhotos />
-                                </Avatar>
-                                </Box>
-                                <Box padding={1}>
-                                <Typography variant="h6" component="h3" gutterBottom={true}>{value['col1-header']}</Typography>
-                                <Typography variant="body2" component="p" color="textSecondary">{value['col1-desc']}</Typography>
-                                </Box>
-                                </Paper>
-                                )
-                              }}
+            {
+              item.map((value,index) => {
+                console.log("index", index)
+                return value['col1-header'] ?
+                    <Grid item xs={12} sm={6} md={3}>
+                  <Paper display="flex" variant={"outlined"} draggable={true}>
+                    <Box pr={5} padding = {1}>
+                      <Avatar variant="rounded" className={classes.iconWrapper}>
+                        <MonochromePhotos />
+                      </Avatar>
+                    </Box>
+                    <Box padding={1}>
+                      <Typography variant="h6" component="h3" gutterBottom={true}>{value['col1-header']}</Typography>
+                      <Typography variant="body2" component="p" color="textSecondary">{value['col1-desc']}</Typography>
+                    </Box>
+                  </Paper>
+                </Grid> :
+                    <Grid item xs={12} sm={6} md={3} >
+                      <Paper display="flex" variant={"outlined"} className={classes.paper} draggable={true}>
+                        {/*<Box pr={5}>*/}
+                        {/*  <Avatar variant="rounded" className={classes.iconWrapper}>*/}
+                        {/*  /!*  <ApartmentIcon />*!/*/}
+                        {/*  </Avatar>*/}
+                        {/*</Box>*/}
+                        {/*<Box padding={1}>*/}
+                        {/*  <Typography variant="h6" component="h3" gutterBottom={true}>{}</Typography>*/}
+                        {/*  <Typography variant="body2" component="p" color="textSecondary">{}</Typography>*/}
+                        {/*</Box>*/}
+                      </Paper>
+                    </Grid>
 
-                              </Draggable>
-                              {provided.placeholder}
-                            </Grid> )
-
-
-                      })
-                  )
-                }
-              }
-
-
-            </Droppable>
-
+              })
+            }
 
           </Grid>
-          </DragDropContext>
         </Box>
       </Container>
     </section>
