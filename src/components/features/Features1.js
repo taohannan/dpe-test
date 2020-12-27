@@ -46,7 +46,7 @@ export default function Features(props) {
     'badge': 'Show off your coding skill',
     'header-p1': 'Question 1: ',
     'header-p2': 'Show the sentences in boxes.',
-    'description': 'Dropee.com,B2B Marketplace,SaaS enabled marketplace,Provide Transparency,Build Trust' + ' \n Just Drag the box to change the location',
+    'description': 'Dropee.com,B2B Marketplace,SaaS enabled marketplace,Provide Transparency,Build Trust',
       'description2': ' Just Drag and Drop the box to change the location',
      ...props.content
   };
